@@ -5,7 +5,6 @@
 #### load libraries ####
 library(tidyverse)
 library(here)
-library(beyonce)
 
 #### load data ####
 freedom <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-02-22/freedom.csv')
@@ -38,4 +37,4 @@ freedom_uk %>%
         axis.text = element_text(size = 10)) + #centering the title and subtitle
   theme_minimal()+ #using a minimal theme to remove the gridded background
   scale_color_viridis_b() #using a color palette that works for continous data
-ggsave(here("freedom_20220222","Output","Civil_Liberties_and_Political_Rights_in_UK.png"), width = 7, height = 6)
+ggsave(here("freedom_20220222","Output","Civil_Liberties_and_Political_Rights_in_UK.png"), width = 4, height = 4)
