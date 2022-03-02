@@ -27,6 +27,10 @@ view(fuel_data)
 map<-map_data("usa")
 fuel_data %>%
   ggplot(aes(fill=FUEL_TYPE_CODE)) +
-  geom_polygon(aes(x = long, y = lat, fill = STATE, group = STATE)) + 
+  geom_polygon(aes(x = long, y = lat, fill = STATE)) + 
   coord_fixed(2.0) +
   guides(fill = "none")
+
+fuel_data %>%
+  ggplot(aes(x = long, y = lat, fill=FUEL_TYPE_CODE)) +
+  geom_map(aes(map_id = STATE), map = map) + expand_limits(x = long, y = lat)
