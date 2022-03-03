@@ -1,6 +1,6 @@
 #### This script is for TidyTuesday 2022-03-01 ####
 #### Created by: Vivian Vy Le ####
-#### Updated on: 2022-03-01 ####
+#### Updated on: 2022-03-02 ####
 
 #### load libraries ####
 library(tidyverse)
@@ -18,12 +18,13 @@ view(stations)
 
 #### data analysis ####
 fuel_data <-stations %>%
-  filter(STATE == "CA") %>%
-  select(CITY, LATITUDE, LONGITUDE, FUEL_TYPE_CODE)
+  filter(STATE == "CA",
+         FUEL_TYPE_CODE != "ELEC") %>%
+  select(LATITUDE, LONGITUDE, FUEL_TYPE_CODE, CITY, ZIP)
 view(fuel_data)
 
 ### plotting and mapping data ###
-ca_map<-ggplot() +
+ggplot() +
   geom_polygon(data = mapdata, 
                aes(x = long, y = lat),
                fill = "grey",
@@ -32,7 +33,8 @@ ca_map<-ggplot() +
              aes(x = LONGITUDE,
                  y = LATITUDE,
                  color = FUEL_TYPE_CODE)) +
-  labs(title = "Varying Fuel Types Offered Throughout California",
+  coord_fixed(1.3) +
+  labs(title = "Non-Electric Fuel Types Offered Throughout California",
        x = "Longitude",
        y = "Latitude",
        caption = "Source: TidyTuesday 2022-03-01",
@@ -40,5 +42,32 @@ ca_map<-ggplot() +
   theme(plot.title = element_text(hjust = 0.5),plot.subtitle = (element_text(hjust =0.5)),
         axis.text = element_text(size = 10)) +
   scale_color_manual(values = pokepal(6))
+ggsave(here("fueling_stations_20220301", "Output", "Non-Electric_Fuel.png"), width = 6, height = 5)
 
 
+### plotting data with electric fuel ###
+elec_data <-stations %>%
+  filter(STATE == "CA",
+         ZIP > "90000") %>%
+  select(LATITUDE, LONGITUDE, FUEL_TYPE_CODE, CITY, ZIP)
+view(elec_data)
+
+ggplot() +
+  geom_polygon(data = mapdata, 
+               aes(x = long, y = lat),
+               fill = "grey",
+               color = "black") + 
+  geom_point(data = elec_data,
+             aes(x = LONGITUDE,
+                 y = LATITUDE,
+                 color = FUEL_TYPE_CODE)) +
+  coord_fixed(1.3) +
+  labs(title = "Varying Fuel Types Offered Throughout California",
+                         x = "Longitude",
+                         y = "Latitude",
+                         caption = "Source: TidyTuesday 2022-03-01",
+                         color = "Fuel Type Code") +
+  theme(plot.title = element_text(hjust = 0.5),plot.subtitle = (element_text(hjust =0.5)),
+        axis.text = element_text(size = 10)) +
+  scale_color_manual(values = pokepal(6))
+ggsave(here("fueling_stations_20220301", "Output", "all_fuel_types.png"), width = 6, height = 5)
