@@ -42,7 +42,7 @@ ggplot() +
   theme(plot.title = element_text(hjust = 0.5), #centers the title
         axis.text = element_text(size = 10)) + #changes the size of the axis titles
   scale_color_manual(values = pokepal(6)) #manually sets the colors of the dots
-ggsave(here("fueling_stations_20220301", "Output", "Non-Electric_Fuel.png"), width = 6, height = 5)
+ggsave(here("fueling_stations_20220301", "Output", "NonElectric_Fuel.png"), width = 6, height = 5)
 
 
 ### plotting data with electric fuel ###
