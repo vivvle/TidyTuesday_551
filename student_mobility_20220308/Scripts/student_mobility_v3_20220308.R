@@ -36,7 +36,11 @@ french_participants_data %>%
        caption = "TidyTuesday of Week 2022-03-08") +
   scale_fill_manual(values = pokepal(151)) + #using mew as a color palette for the boxplot
   theme(plot.title = element_text(hjust = 0.5),
+        axis.title = element_text(face = "bold"), #change the axis titles to be bold
         axis.text = element_text(size = 10),
+        axis.text.x = element_text(color = "#000000", #change the color of the x labels
+                                   angle = 90), #change the angle of the text
+        axis.text.y = element_text(color = "#000000"),
         plot.subtitle = element_text(hjust = 0.5)) +
   facet_wrap(~academic_year) #allows to look at all academic years from the data
 ggsave(here("student_mobility_20220308", "Output","erasmus_france.png"), width = 6, height = 5)
