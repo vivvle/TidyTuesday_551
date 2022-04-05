@@ -12,3 +12,18 @@ sports <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tid
 
 #### view data ####
 view(sports)
+glimpse(sports)
+
+#### data analysis ####
+sports_data <- sports %>%
+  select(year, sports, sum_partic_men, sum_partic_women, exp_men, exp_women, total_exp_menwomen)
+view(sports_data)
+
+sports_part <- sports_data %>%
+  group_by(year, sports) %>%
+  mutate(partic_total = (sum_partic_men + sum_partic_women)) %>%
+  drop_na() %>%
+  relocate(partic_total, .after = sum_partic_women)
+view(sports_part)
+
+#### plotting data ####
