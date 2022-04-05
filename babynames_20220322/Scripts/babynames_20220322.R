@@ -44,3 +44,4 @@ popular_f %>%
   scale_fill_manual(values = lacroix_palette("PassionFruit", n = 31, type = "continuous")) + 
   coord_flip() +
   guides(fill = FALSE)
+ggsave(here("babynames_20220322", "Output", "female_babynames.png"), width = 6, height = 5)
