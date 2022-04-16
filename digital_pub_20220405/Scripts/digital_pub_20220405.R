@@ -1,6 +1,6 @@
 #### This script is for TidyTuesday 2022-04-05 ####
 #### Created by: Vivian Vy Le ####
-#### Updated on: 2022-04-15 ####
+#### Updated on: 2022-04-16 ####
 
 #### Load libraries ####
 library(tidyverse)
