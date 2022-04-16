@@ -24,14 +24,14 @@ newsorgs_clean <- news_orgs %>%
 view(newsorgs_clean)
 
 communities <- newsorgs_clean %>%
-  rowwise() %>%
-  mutate(community = str_split(underrepresented_communities, pattern = ", ")) %>%
-  ungroup() %>%
-  unnest(community)
+  rowwise() %>% #looks at rows one at a time, can commute data with it
+  mutate(community = str_split(underrepresented_communities, pattern = ", ")) %>% #splitting into a new column
+  ungroup() %>% #removes grouping
+  unnest(community) #creates a list for all of community
 view(communities)
 
 data_communities <- communities %>%
-  count(community) %>%
+  count(community) %>% #counts the different types in the column
   arrange(desc(n))
 view(data_communities)
 
@@ -41,11 +41,17 @@ data_communities %>%
   ggplot() +
   geom_col(aes(x = reorder(community, -n), y = n, fill = community)) +
   labs(title = "Number of News Organizations that Serve Underrepresented Communities",
-       subtitle = "Data provided by new organizations or publicly available data",
+       subtitle = "Information provided by news organizations or is publicly available",
        x = "Communities",
        y = "Counts",
-       fill = "Community",
        caption = "Source: TidyTuesday for Week 2022-04-05") +
-  theme(axis.text.x = element_text(size = 8,
-                                   angle = 90)) +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5),
+        axis.title = element_text(face = "bold"),
+        axis.text.x = element_text(size = 8,
+                                   angle = 90),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank()) + 
+  scale_fill_manual(values = lacroix_palette("MurePepino", n = 7, type = "continuous")) +
   guides(fill = FALSE)
+ggsave(here("digital_pub_20220405", "Output", "community.png"), width = 8, height = 6)
