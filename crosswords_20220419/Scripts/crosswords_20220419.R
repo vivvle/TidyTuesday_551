@@ -7,7 +7,7 @@ library(tidyverse)
 library(here)
 library(ggplot2)
 library(LaCroixColoR)
-
+library(patchwork)
 
 #### load data ####
 big_dave <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-04-19/big_dave.csv')
@@ -38,21 +38,47 @@ view(dave_data)
 
 
 #### plotting data 
+#creating a color palette
 pal_b <- lacroix_palette("Berry", 21, type = "continuous")
 pal_o <- lacroix_palette("Orange", 21, type = "continuous")
 
-
+#first plot
 p1 <- times_data %>%
-  ggplot(aes(x = reorder(answer, n), y = n, fill = answer)) +
+  ggplot(aes(x = reorder(answer, n), y = n, fill = answer)) + #reorder the answers so that it is descending
   geom_col() +
   labs(title = "Words Used as Answers Multiple Times in Times Crossword",
        x = "Answers",
        y = "Counts",
        caption = "Source: TidyTuesday for Week 2022-04-19") +
   theme(plot.title = element_text(hjust= 0.5,
-                                  size = 10),
-        axis.title = element_text(face = "bold")) +
-  scale_fill_manual(values = pal_b) +
+                                  size = 10,
+                                  face = "bold"),
+        axis.title = element_text(face = "bold"),
+        panel.background = element_blank()) + #removed the background and grids
+  scale_fill_manual(values = pal_b) + #used berry color palette
   coord_flip() +
   guides(fill = FALSE)
+ggsave(here("crosswords_20220419", "Output", "times_words.png"), width = 6, height = 5)
 
+#second plot
+p2 <-dave_data %>%
+  ggplot(aes(x = reorder(answer, n), y = n, fill = answer)) +
+  geom_col() +
+  labs(title = "Words Used as Answers Multiple Times in Big Dave Crossword",
+       x = "Answers",
+       y = "Counts",
+       caption = "Source: TidyTuesday for Week 2022-04-19") +
+  theme(plot.title = element_text(hjust= 0.5,
+                                  size = 10,
+                                  face = "bold"),
+        axis.title = element_text(face = "bold"),
+        panel.background = element_blank()) + #remove background and grids
+  scale_fill_manual(values = pal_o) + #used orange color palette 
+  coord_flip() +
+  guides(fill = FALSE)
+ggsave(here("crosswords_20220419", "Output", "big_dave_words.png"), width = 6, height = 5)
+
+
+#patch both plots together, times plot on top of big dave plot
+p1/p2
+ggsave(here("crosswords_20220419", "Output", "combined_plots.png"), width = 9, height = 10)
